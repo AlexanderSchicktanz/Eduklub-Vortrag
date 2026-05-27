@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<title>PT2</title>
+
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+		/>
+
+		<link rel="stylesheet" href="reveal.js/dist/reveal.css" />
+		<link rel="stylesheet" href="reveal.js/dist/theme/night.css" />
+		<style>
+			[current]{
+				  font-weight: bold;
+				  color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<img src="assets/hpi-logo-white.svg" style="position: fixed; scale: 0.4; top: 0; right: 0;transform: translate(+50%,-50%)">
+		<ul style="position: fixed; top: 1vh; left: 0; color: var(--r-heading-color); list-style-type: none;" id="menu">
+		</ul>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<div>
+						<h3>Datenstrukturen, Laufzeiten, Algorithmen</h3>
+						<div style="width: 30vw; height: 1vh; background-color: red; margin: auto;"></div>
+						<br>
+						<p id="date">Datum</p>
+						<script>
+								var element = document.getElementById("date");
+								var today = new Date();
+								var dd = String(today.getDate()).padStart(2, '0');
+								var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+								var yyyy = today.getFullYear();
+
+								element.innerText = dd + '.' + mm + '.' + yyyy;
+						</script>
+						<p>HPI Educationklub<p>
+						<p>Theo Knurbien, Alex Schickanz</p>
+					</div>
+				</section>
+				<section secStart="Datenstrukturen">
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Motivation
+						* wie den Speicher nutzen?
+						* Datenmengen effizient verarbeiten
+						* wenn möglich Wissen über Daten ausnutzen
+						---
+						## Array
+						* Daten nebeneinander im Speicher ablegen
+						* feste Größe an Daten
+						* Daten mit gleichem Datentyp
+						* Schneller Zugriff auf Daten
+					</script>
+				</section>
+				<section>
+					<div>
+						<div id="array"></div>
+						<p id="arrayInput" contenteditable="true">A[0]</p>
+						<style>
+							#array{
+								display: flex;
+							}
+							#array>*{
+								padding: 1vw;
+							}
+						</style>
+						<script>
+							let array = document.getElementById("array");
+							let A = [42, 5, 67, 10];
+							for(let i = 0; i < A.length; i++){
+								let element = document.createElement("div");
+								let value = document.createElement("p");
+								value.innerText=A[i];
+								let index = document.createElement("p");
+								index.innerText=i;
+								element.appendChild(value);
+								element.appendChild(index);
+								array.appendChild(element);
+							}
+							let arrayInput = document.getElementById("arrayInput");
+							arrayInput.onkeypress=(event)=>{
+								if(event.keyCode==13){
+									event.preventDefault();
+									if(arrayInput.innerText.endsWith("]"))
+										alert(eval(arrayInput.innerText));
+									else{
+										eval(arrayInput.innerText);
+										for(let i = 0; i < array.children.length; i++){
+											array.children[i].children[0].innerText=A[i];
+										}
+									}
+								}
+							}
+						</script>
+					</div>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Stack
+						* neues Element wird oben auf Stapel gelegt
+						* nur oberstes Element kann gelesen und entfernt werden
+						* Last In First Out
+						* dynamisch
+						* Daten nicht zwingend nebeneinander im Speicher
+					</script>
+				</section>
+				<section>
+					<div>
+						<div id="stack"></div>
+						<p id="stackInput" contenteditable="true">pop()</p>
+						<style>
+							#stackInput{
+								position: absolute;
+								bottom: -70vh;
+								width: 20vw;
+							}
+							#stack{
+								position: absolute;
+								bottom: -50vh;
+							}
+							stack>*{
+								padding: 1vw;
+							}
+						</style>
+						<script>
+							let stack = document.getElementById("stack");
+							let S = [42, 5, 67, 10];
+							for(let i = 0; i < A.length; i++){
+								let element = document.createElement("div");
+								let value = document.createElement("p");
+								value.innerText=A[i];
+								element.appendChild(value);
+								stack.appendChild(element);
+							}
+							function pop(){
+								let elem = stack.children[0];
+								let v = elem.children[0].innerText;
+								elem.remove();
+								alert(v);
+							}
+							function push(v){
+								let element = document.createElement("div");
+								let value = document.createElement("p");
+								value.innerText=v;
+								element.appendChild(value);
+								stack.insertBefore(element,stack.children[0]);
+							}
+							let stackInput = document.getElementById("stackInput");
+							stackInput.onkeypress=(event)=>{
+								if(event.keyCode==13){
+									event.preventDefault();
+									eval(stackInput.innerText);
+								}
+							}
+						</script>
+					</div>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Queue
+						* First In First Out
+						* neuestes Element ist hinten
+						* ältestes Element ist vorne
+						* Erweiterungen denkbar
+					</script>
+				</section>
+				<section>
+					<div>
+						<div id="queue"></div>
+						<p id="queueInput" contenteditable="true">pop()</p>
+						<style>
+							#queueInput{
+								position: absolute;
+								bottom: -70vh;
+								width: 20vw;
+							}
+							#queue{
+								position: absolute;
+								bottom: -50vh;
+							}
+							queue>*{
+								padding: 1vw;
+							}
+						</style>
+						<script>
+							let queue = document.getElementById("queue");
+							let Q = [42, 5, 67, 10];
+							for(let i = 0; i < Q.length; i++){
+								let element = document.createElement("div");
+								let value = document.createElement("p");
+								value.innerText=A[i];
+								element.appendChild(value);
+								queue.appendChild(element);
+							}
+							function pop(){
+								let elem = queue.children[0];
+								let v = elem.children[0].innerText;
+								elem.remove();
+								alert(v);
+							}
+							function push(v){
+								let element = document.createElement("div");
+								let value = document.createElement("p");
+								value.innerText=v;
+								element.appendChild(value);
+								queue.appendChild(element);
+							}
+							let queueInput = document.getElementById("queueInput");
+							queueInput.onkeypress=(event)=>{
+								if(event.keyCode==13){
+									event.preventDefault();
+									eval(queueInput.innerText);
+								}
+							}
+						</script>
+					</div>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## List
+						* ergänzt Queue
+						* Einfügen & Löschen an beliebigen Stellen
+						* Auch Verweis auf letztes Element
+					</script>
+				</section>
+				<section>
+					<div>
+						<div id="list"></div>
+						<p id="listInput" contenteditable="true">pop()</p>
+						<style>
+							#queueInput{
+								position: absolute;
+								bottom: -70vh;
+								width: 20vw;
+							}
+							#queue{
+								position: absolute;
+								bottom: -50vh;
+							}
+							queue>*{
+								padding: 1vw;
+							}
+						</style>
+						<script>
+							let list = document.getElementById("list");
+							let L = [42, 5, 67, 10];
+							for(let i = 0; i < L.length; i++){
+								let element = document.createElement("div");
+								let value = document.createElement("p");
+								value.innerText=A[i];
+								element.appendChild(value);
+								list.appendChild(element);
+							}
+							function pop(){
+								let elem = list.children[0];
+								let v = elem.children[0].innerText;
+								elem.remove();
+								alert(v);
+							}
+							function push(v){
+								let element = document.createElement("div");
+								let value = document.createElement("p");
+								value.innerText=v;
+								element.appendChild(value);
+								list.appendChild(element);
+							}
+							function get(i){
+								let elem = list.children[list.children.length-1-i];
+								let v = elem.children[0].innerText;
+								alert(v);
+							}
+							function set(i,v){
+								let elem = list.children[list.children.length-1-i];
+								elem.children[0].innerText=v;
+							}
+							let listInput = document.getElementById("listInput");
+							listInput.onkeypress=(event)=>{
+								if(event.keyCode==13){
+									event.preventDefault();
+									eval(listInput.innerText);
+								}
+							}
+						</script>
+					</div>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Graph
+						* Endliche Anzahl Knoten
+						* Kanten sind Verbindungen zwischen zwei Knoten
+						* Graphentheorie
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Tree
+						* besonderer Graph
+						* keine Kreise
+						* rekursive Datenstruktur
+						* oft: Binary Tree
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Hashmap
+						* assoziatives Array
+						* ordnet Schlüsseln Werte zu
+					</script>
+				</section>
+				<section secStart="Laufzeit">
+				</section>
+				<section secStart="Algorithmen">
+				</section>
+			</div>
+		</div>
+
+		<script src="reveal.js/dist/reveal.js"></script>
+		<script src="reveal.js/dist/reveal.js"></script>
+		<script src="reveal.js/dist/plugin/markdown.js"></script>
+		<script src="reveal.js/dist/plugin/highlight.js"></script>
+		<script src="reveal.js/dist/plugin/notes.js"></script>
+		<script src="reveal.js/dist/plugin/math.js"></script>
+		<script>
+			let slides = Array.from(document.getElementsByClassName("slides")[0].children);
+			let menu = document.getElementById("menu");
+			let sectionStarts = document.querySelectorAll("[secStart]");
+			for(let i = 0; i < sectionStarts.length; i++){
+				let li = document.createElement("li");
+				li.innerText=sectionStarts[i].getAttribute("secStart");
+				if(sectionStarts[i].children.length==0){
+					let header = document.createElement("h3");
+					header.innerText=sectionStarts[i].getAttribute("secStart");
+					sectionStarts[i].appendChild(header);
+				}
+				menu.appendChild(li);
+			}
+			let sections = [];
+			for(var i = 0; i < sectionStarts.length; i++){
+				sections.push(slides.indexOf(sectionStarts[i]));
+				console.log("Menuitem: "+i+" mit Namen "+menu.children[i].innerText+" auf Slide "+sections[i]);
+			}
+
+			Reveal.initialize({
+				transition: 'linear',
+				progress: false,
+				markdown: {
+					smartypants: true,
+				},
+
+				plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX],
+			});
+			Reveal.on('slidechanged', (event) => {
+				let current = document.querySelector('[current]');
+				if(current) current.removeAttribute("current");
+				let i = sections.length;
+				while(--i>=0)if(event.indexh>=sections[i])break;
+				if(i<menu.children.length&&i>=0){
+					menu.children[i].setAttribute("current","");
+					console.log("Slide "+event.indexh+" ist Teil von "+menu.children[i].innerText);
+				}
+			});
+		</script>
+	</body>
+</html>
