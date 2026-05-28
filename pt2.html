@@ -21,7 +21,7 @@
 	</head>
 
 	<body>
-		<img src="assets/hpi-logo-white.svg" style="position: fixed; scale: 0.4; top: 0; right: 0;transform: translate(+50%,-50%)">
+		<img src="hpi-logo-white.svg" style="position: fixed; top: 0; right: 0; scale: 0.4;transform: translate(+50%,-50%)">
 		<ul style="position: fixed; top: 1vh; left: 0; color: var(--r-heading-color); list-style-type: none;" id="menu">
 		</ul>
 		<div class="reveal">
@@ -300,6 +300,9 @@
 						* Graphentheorie
 					</script>
 				</section>
+				<section>
+					  <iframe data-src="https://abitur-vorbereitung.github.io/Informatik/Themen" style="width: 80vw; height: 30vw;"></iframe>
+				</section>
 				<section data-markdown>
 					<script type="text/template">
 						## Tree
@@ -309,12 +312,154 @@
 						* oft: Binary Tree
 					</script>
 				</section>
+				<section>
+					<h3>Binary Tree</h3>
+					<div id="binaryTree" style="width: 200%; height: 400px; transform: translateX(-45%);"></div>
+
+					<script src="https://d3js.org/d3.v7.min.js"></script>
+					<script>
+						// Binary Tree Data
+						const treeData = {
+						name: "Root",
+						children: [
+							{
+							name: "Node A",
+							children: [
+								{ name: "Node A1", children: [] },
+								{ name: "Node A2", children: [] }
+							]
+							},
+							{
+							name: "Node B",
+							children: [
+								{ name: "Node B1", children: [] },
+								{ name: "Node B2", children: [] }
+							]
+							}
+						]
+						};
+
+						// Set up the SVG container
+						const width = 2000;
+						const height = 400;
+						const svg = d3.select("#binaryTree")
+						.append("svg")
+						.attr("width", width)
+						.attr("height", height)
+						.append("g")
+						.attr("transform", "translate(400, 50)");
+
+						// Create a tree layout
+						const treeLayout = d3.tree().size([width - 100, height - 100]);
+
+						// Convert the data to a hierarchy
+						const root = d3.hierarchy(treeData);
+						const treeDataLayout = treeLayout(root);
+
+						// Draw the links (edges)
+						svg.selectAll(".link")
+						.data(treeDataLayout.links())
+						.enter()
+						.append("path")
+						.attr("class", "link")
+						.attr("d", d3.linkVertical()
+							.x(d => d.x)
+							.y(d => d.y)
+						)
+						.attr("fill", "none")
+						.attr("stroke", "#555")
+						.attr("stroke-width", 2);
+
+						// Draw the nodes
+						const node = svg.selectAll(".node")
+						.data(treeDataLayout.descendants())
+						.enter()
+						.append("g")
+						.attr("class", "node")
+						.attr("transform", d => `translate(${d.x},${d.y})`);
+
+						// Add circles for nodes
+						node.append("circle")
+						.attr("r", 15)
+						.attr("fill", "#69b3a2");
+					</script>
+					</section>
 				<section data-markdown>
 					<script type="text/template">
 						## Hashmap
 						* assoziatives Array
 						* ordnet Schlüsseln Werte zu
 					</script>
+				</section>
+
+				<section>
+					<div>
+						<div id="hash"></div>
+						<p id="hashInput" contenteditable="true">add(4,"VIER")</p>
+						<style>
+							#hashInput{
+								position: absolute;
+								bottom: -90vh;
+								width: 20vw;
+							}
+							#hash{
+								position: absolute;
+								bottom: -75vh;
+								scale: .5;
+							}
+							#hash>*{
+								display: flex;
+							}
+							#hash>*>*{
+								line-height: 1;
+								margin-right: 40px;
+							}
+						</style>
+						<script>
+							let hash = document.getElementById("hash");
+							let H = [[[0,"NULL"]], [[1,"EINS"]], [[2,"ZWEI"]], [[3,"DREI"]]];
+							for(let i = 0; i < H.length; i++){
+								let bucket = document.createElement("div");
+								for(let j = 0; j < H[i].length; j++){
+									let item = document.createElement("div");
+									let value = document.createElement("p");
+									value.innerText=H[i][j][1];
+									let key = document.createElement("p");
+									key.innerText=H[i][j][0];
+									item.appendChild(value);
+									item.appendChild(key);
+									bucket.appendChild(item);
+								}
+								hash.appendChild(bucket);
+							}
+							function add(k, val){
+								H[k%H.length].push([k,val]);
+								let item = document.createElement("div");
+								let value = document.createElement("p");
+								value.innerText=val;
+								let key = document.createElement("p");
+								key.innerText=k;
+								item.appendChild(value);
+								item.appendChild(key);
+								hash.children[k%H.length].appendChild(item);
+							}
+							function get(k){
+								let arr=H[k%H.length]
+								for(let i = 0; i < arr.length; i++)if(arr[i][0]==k){
+									alert(arr[i][1]);
+									return;
+								}
+								alert("Not found");
+							}
+							let hashInput = document.getElementById("hashInput");
+							hashInput.onkeypress=(event)=>{
+								if(event.keyCode==13){
+									event.preventDefault();
+									eval(hashInput.innerText);
+								}
+							}
+						</script>
+					</div>
 				</section>
 				<section secStart="Laufzeit">
 				</section>
@@ -362,7 +507,7 @@
 				let current = document.querySelector('[current]');
 				if(current) current.removeAttribute("current");
 				let i = sections.length;
-				while(--i>=0)if(event.indexh>=sections[i])break;
+				while(--i>=0)if(event.indexh>=sections[i]&&(event.indexh<5||event.indexh>sections[i])/*kp, wieso das dasein muss, aber sonst ist entweder vorne oder hinten ein off-by-one-error*/)break;
 				if(i<menu.children.length&&i>=0){
 					menu.children[i].setAttribute("current","");
 					console.log("Slide "+event.indexh+" ist Teil von "+menu.children[i].innerText);
