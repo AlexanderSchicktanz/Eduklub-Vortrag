@@ -53,7 +53,9 @@
 						* wie den Speicher nutzen?
 						* Datenmengen effizient verarbeiten
 						* wenn möglich Wissen über Daten ausnutzen
-						---
+				</section>
+				<section data-markdown>
+					<script type="text/template">
 						## Array
 						* Daten nebeneinander im Speicher ablegen
 						* feste Größe an Daten
@@ -463,7 +465,126 @@
 				</section>
 				<section secStart="Laufzeit">
 				</section>
-				<section secStart="Algorithmen">
+				<section data-markdown>
+					<script type="text/template">
+						### Grundlagen der Laufzeitanalyse
+						* Was ist überhaupt die Laufzeit eines Algorithmus?
+						* Laufzeit = Zeit, die ein Algorithmus benötigt, um fertig zu werden
+						* meist interessiert uns die Laufzeit im Worst-Case
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						##### Option 1 - Empirische Laufzeitanalyse
+						* ausführen und messen
+						* hängt von Betriebsystem, anderen Prozessen, Architektur ab
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						##### Option 2 - Asymptotische Laufzeitanalyse
+						* theoretisch (am Code) analysieren
+						* für beliebige Eingaben
+						* unser Fokus heute
+					</script>
+				</section>
+				<section>
+					<br>
+					<br>
+					<p>
+						Endfernung zwischen
+						Graph/Kurve und
+						Asymptote ist im
+						<span style="color: red">Unendlichen</span> 0
+					</p>
+					<img src="asymptote.png" style="scale: .6; transform: translateY(-30%)"/>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						$O(1)$ konstant\
+						$$f(n)=1$$
+						$$f(n)=1\cdot 2$$
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						$O(log(n))$ logarithmisch\
+						$$f(n)=log(n)$$
+						$$f(n)=log(n)\cdot 2$$
+						$$f(n)=log(n)+3$$
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						$O(n)$ linear\
+						$$f(n)=n$$
+						$$f(n)=n\cdot 2$$
+						$$f(n)=n+log(n)$$
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						$O(n log(n))$ Sortierung
+						$$f(n)=n log(n)$$
+						$$f(n)=n log(n)\cdot 2$$
+						$$f(n)=n log(n)+n$$
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						$O(n^2)$ Quadratisch
+						$$f(n)=n^2$$
+						$$f(n)=n^2\cdot 2$$
+						$$f(n)=n^2+log(n)$$
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+						$O(n^3)$ Qubisch
+						$$f(n)=n^3$$
+						$$f(n)=n^3\cdot 2$$
+						$$f(n)=n^3+n^2$$
+
+					</script>
+				</section>
+				<section>
+					<pre><code data-trim data-noescape>
+					for (int i = 0; i < N; i = i+1) {
+						print_line("Aktuelle Zahl: " + i);
+					}
+				</code></pre>
+				</section>
+				<section>
+					<pre><code data-trim data-noescape>
+					for (int i = 0; i < N; i = i+1) {
+						print_line(“Aktuelle Zahl: ” + i);
+					}
+					for(int j = 0; j < N; j = j+1) {
+						print_line(“Aktuelle Zahl: ” + j);
+					}
+				</code></pre>
+				</section>
+				<section>
+					<pre><code data-trim data-noescape>
+					int a = 0;
+					int b = a+1;
+				</code></pre>
+				</section>
+				<section>
+					<pre><code data-trim data-noescape>
+					int i = 99;
+					while (i < 100) {
+						i = i;
+					}
+				</code></pre>
+				</section>
+				<section>
+					<pre><code data-trim data-noescape>
+					for (int i = 0; i < N; i = i+1) {
+						for (int j = 0; j < N; j = j+1) {
+							print_line(“Aktuelle Zahlen: ” + i + ", " + j);
+						}
+					}
+				</code></pre>
+				</section>
+				<section secStart="Algorithmen" data-transition="convex-out">
+				</section>
+				<section data-transition="convex-in fade-out">
+					<h2>Viel Erfolg!!!</h2>
+					<img src="fingerheart.svg"/>
 				</section>
 			</div>
 		</div>
@@ -507,7 +628,7 @@
 				let current = document.querySelector('[current]');
 				if(current) current.removeAttribute("current");
 				let i = sections.length;
-				while(--i>=0)if(event.indexh>=sections[i]&&(event.indexh<5||event.indexh>sections[i])/*kp, wieso das dasein muss, aber sonst ist entweder vorne oder hinten ein off-by-one-error*/)break;
+				while(--i>=0)if(event.indexh>=sections[i]/*kp, wieso das dasein muss, aber sonst ist entweder vorne oder hinten ein off-by-one-error*/)break;
 				if(i<menu.children.length&&i>=0){
 					menu.children[i].setAttribute("current","");
 					console.log("Slide "+event.indexh+" ist Teil von "+menu.children[i].innerText);
